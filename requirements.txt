@@ -2,4 +2,3 @@ streamlit
 pysqlite3
 Pillow
 pandas
-time
