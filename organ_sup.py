@@ -41,7 +41,7 @@ def menu2(col1,col2,col3):
                 progress.progress(i+1)
             edit_prod(change,sets,edit,p_id)
     elif radc2=="delete":
-        p_id=col1.text_input("product id to delete")
+        p_id=col3.text_input("product id to delete")
         if col3.button("delete product"):
             col3.write("----deleting product --->")
             progress=col3.progress(0)
