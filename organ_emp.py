@@ -10,14 +10,14 @@ def menu():
     # create selection menu
     exp=col1.expander("Employee field")
     exp.write("""**About**""")
-    radc1 = col1.selectbox("options",["fetch","add","edit","delete"])
+    radc1 = exp.selectbox("options",["fetch","add","edit","delete"])
     # saving employee infos
     if radc1=="add":
-        name=col1.text_input("full name")
-        id_no=col1.text_input("National id Number")
-        age=col1.text_input("age")
-        date=col1.date_input("date of joining")
-        if col1.button("ADD INFO"):
+        name=exp.text_input("full name")
+        id_no=exp.text_input("National id Number")
+        age=exp.text_input("age")
+        date=exp.date_input("date of joining")
+        if exp.button("ADD INFO"):
             try:
                 add_emp(name,id_no,age,date)
             except Exception as e:
@@ -25,23 +25,23 @@ def menu():
     # search employee by id
     elif radc1=="fetch":
         # input search by employee id
-        search=col1.text_input("search by id")
-        if col1.button("fetch"):
+        search=exp.text_input("search by id")
+        if exp.button("fetch"):
             st.write(fetch_emp(search))
     elif radc1=="edit":
         # input for id to edit
-        edit_id=col1.text_input("edit employee id")
-        change=col1.selectbox("field to edit",["name","idno","Date","age"])
-        sets=col1.text_input("new value")
-        if col1.button("edit"):
+        edit_id=exp.text_input("edit employee id")
+        change=exp.selectbox("field to edit",["name","idno","Date","age"])
+        sets=exp.text_input("new value")
+        if exp.button("edit"):
             with st.spinner("--editimg"):
                 edit_emp(change,sets,edit_id)
 
     elif radc1=="delete":
-        emp_id=col1.text_input("employee id to delete")
+        emp_id=exp.text_input("employee id to delete")
         delete_emp(emp_id)
 
-    menu2(col1,col2,col3)
+    menu2(exp,col2,col3)
 
 
 

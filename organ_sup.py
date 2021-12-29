@@ -5,25 +5,25 @@ import time
 def menu2(col1,col2,col3):
     exp=col3.expander("Supply field")
     exp.write("""**About**""")
-    radc2=col3.selectbox("",["fetch","add","edit","delete"])
+    radc2=exp.selectbox("",["fetch","add","edit","delete"])
     if radc2=="add":
         # add product info
-        name=col3.text_input("product name")
-        desc=col3.text_input("product descriptions")
-        if col3.button("add product"):
-            col3.write("---Adding product--->")
-            progress=col3.progress(0)
+        name=exp.text_input("product name")
+        desc=exp.text_input("product descriptions")
+        if exp.button("add product"):
+            exp.write("---Adding product--->")
+            progress=exp.progress(0)
             for i in range(100):
                 time.sleep(0.01)
                 progress.progress(i+1)
             add_prod(name,desc)
-            col3.write("product Added successfully")
+            exp.write("product Added successfully")
     elif radc2=="fetch":
         # input search by product id
-        search=col3.text_input("search by product id")
-        if col3.button("fetch product"):
-            col3.write("searching product")
-            progress=col3.progress(0)
+        search=exp.text_input("search by product id")
+        if exp.button("fetch product"):
+            exp.write("searching product")
+            progress=exp.progress(0)
             for i in range(100):
                 time.sleep(0.01)
                 progress.progress(i+1)
@@ -31,20 +31,20 @@ def menu2(col1,col2,col3):
 
     elif radc2=="edit":
         # input edit by product id
-        edit_p_id=col3.text_input("edit by product id")
-        change=col3.selectbox("field to edit",["name","desc"])
-        sets=col3.text_input("new value")
-        if col3.butoon("edit product"):
-            progress=col3.progress(0)
+        edit_p_id=exp.text_input("edit by product id")
+        change=exp.selectbox("field to edit",["name","desc"])
+        sets=exp.text_input("new value")
+        if exp.butoon("edit product"):
+            progress=exp.progress(0)
             for i in range(100):
                 time.sleep(0.01)
                 progress.progress(i+1)
             edit_prod(change,sets,edit,p_id)
     elif radc2=="delete":
-        p_id=col3.text_input("product id to delete")
-        if col3.button("delete product"):
-            col3.write("----deleting product --->")
-            progress=col3.progress(0)
+        p_id=exp.text_input("product id to delete")
+        if exp.button("delete product"):
+            exp.write("----deleting product --->")
+            progress=exp.progress(0)
             for i in range(100):
                 time.sleep(0.01)
                 progress.progress(i+1)
