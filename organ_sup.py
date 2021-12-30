@@ -34,7 +34,7 @@ def menu2(col1,col2,col3):
         edit_p_id=exp.text_input("edit by product id")
         change=exp.selectbox("field to edit",["name","desc"])
         sets=exp.text_input("new value")
-        if exp.butoon("edit product"):
+        if exp.button("edit product"):
             progress=exp.progress(0)
             for i in range(100):
                 time.sleep(0.01)
