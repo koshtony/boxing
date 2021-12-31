@@ -40,8 +40,7 @@ def menu():
     elif radc1=="delete":
         emp_id=exp.text_input("employee id to delete")
         delete_emp(emp_id)
-
-    menu2(exp,col2,col3)
+    menu2(col1,col2,col3)
 
 
 
