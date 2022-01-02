@@ -18,27 +18,44 @@ def menu():
         age=exp.text_input("age")
         date=exp.date_input("date of joining")
         if exp.button("ADD INFO"):
-            try:
-                add_emp(name,id_no,age,date)
-            except Exception as e:
-                st.write(e)
+            p=st.progress(0)
+            for i in range(100):
+                time.sleep(0.01)
+                p.progress(i+1)
+            st.balloons()
+            add_emp(name,id_no,age,date)
+
     # search employee by id
     elif radc1=="fetch":
         # input search by employee id
         search=exp.text_input("search by id")
         if exp.button("fetch"):
-            st.write(fetch_emp(search))
+            p=st.progress(0)
+            for i in range(100):
+                time.sleep(0.01)
+                p.progress(i+1)
+            st.balloons()
+            st.dataframe(fetch_emp(search))
     elif radc1=="edit":
         # input for id to edit
         edit_id=exp.text_input("edit employee id")
         change=exp.selectbox("field to edit",["name","idno","Date","age"])
         sets=exp.text_input("new value")
         if exp.button("edit"):
-            with st.spinner("--editimg"):
-                edit_emp(change,sets,edit_id)
+            p=st.progress(0)
+            for i in range(100):
+                time.sleep(0.01)
+                p.progress(i+1)
+            st.balloons()
+            edit_emp(change,sets,edit_id)
 
     elif radc1=="delete":
         emp_id=exp.text_input("employee id to delete")
+        p=st.progress(0)
+        for i in range(100):
+            time.sleep(0.01)
+            p.progress(i+1)
+        st.balloons()
         delete_emp(emp_id)
     menu2(col1,col2,col3)
 
@@ -76,6 +93,6 @@ def edit_emp(val,set,id):
 
 def delete_emp(id):
      # delete employee by id.
-     conn=sqlite3.connect("organs.db")
+     conn=sqlite3.connect("organ.db")
      con=conn.cursor()
      con.execute("delete from organisation where empid=?",(id,))

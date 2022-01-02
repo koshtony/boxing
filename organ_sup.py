@@ -27,7 +27,8 @@ def menu2(col1,col2,col3):
             for i in range(100):
                 time.sleep(0.01)
                 progress.progress(i+1)
-            st.write(fetch_prod(search))
+            st.dataframe(fetch_prod(search))
+
 
     elif radc2=="edit":
         # input edit by product id
