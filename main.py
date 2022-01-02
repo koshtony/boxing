@@ -4,8 +4,6 @@ from PIL import Image
 from dist_prod import dist_menu
 # created navigation menu using radio button
 st.get_option("theme.textColor")
-
-st.markdown(page_bg_img, unsafe_allow_html=True)
 rad1 = st.sidebar.radio("menu",["ORGANISATION","DISTRIBUTION MANAGEMENT",
                 "SUPPLY MANAGEMENT","CUSTOMER INFO","MARKET INFO"])
 if rad1=="ORGANISATION":
