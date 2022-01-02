@@ -16,7 +16,7 @@ def dist_menu():
             for i in range(100):
                 time.sleep(0.01)
                 p.progress(i+1)
-            st.balloons()
+
             st.dataframe(f_data)
     elif fetch_r=="All":
         st.dataframe(fetch_info())
@@ -36,7 +36,7 @@ def dist_menu():
         for i in range(100):
             time.sleep(0.01)
             p.progress(i+1)
-        st.balloons()
+
         delete_info(d_id)
     pander4=c2.expander("Edit")
     edit_id=pander4.text_input("Edit by pid")
@@ -47,7 +47,7 @@ def dist_menu():
         for i in range(100):
             time.sleep(0.01)
             p.progress(i+1)
-        st.balloons()
+
         edit_info(change,set,edit_id)
 
 def add_info(price,quantity,desc,region,town,shop):
