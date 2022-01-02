@@ -30,17 +30,17 @@ def menu():
         # input search by employee id
         emp_rad=exp.radio("",["All","filter"])
         if emp_rad=="All":
-            st.dataframe(fetch_emp())
+            col1.dataframe(fetch_emp())
         elif emp_rad=="filter":
             search=exp.text_input("search by id")
             if exp.button("fetch"):
-                p=st.progress(0)
+                p=col1.progress(0)
                 for i in range(100):
                     time.sleep(0.01)
                     p.progress(i+1)
                 data=fetch_emp()
                 d_f=data[data["id"]==int(search)]
-                st.dataframe(d_f)
+                col1.dataframe(d_f)
     elif radc1=="edit":
         # input for id to edit
         edit_id=exp.text_input("edit employee id")
@@ -81,11 +81,8 @@ def fetch_emp():
     con.execute("select *from organisation")
     values=con.fetchall()
     names=["emp id","name","id","age","joining date"]
-    val_dict={}
-    for i in range(len(names)):
-        val_dict[names[i]]=values[0][i]
 
-    return pd.DataFrame(val_dict,index=[0])
+    return pd.DataFrame(values,columns=names)
 
 def edit_emp(val,set,id):
     # sqlite edit code

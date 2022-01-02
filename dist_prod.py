@@ -28,7 +28,11 @@ def dist_menu():
     shop=pander.text_input("Shop Name")
     desc=pander.text_area("Product description")
     if pander.button("Confirm"):
-            add_info(price,quantity,desc,region,town,shop)
+        p=st.progress(0)
+        for i in range(100):
+            time.sleep(0.01)
+            p.progress(i+1)
+        add_info(price,quantity,desc,region,town,shop)
     pander3=c2.expander("Delete")
     d_id = pander3.text_input("pid")
     if pander3.button("Delete"):
@@ -65,11 +69,7 @@ def fetch_info():
     con.execute("select *from dist_prod")
     values=con.fetchall()
     names=["pid","price","quantity","description","region","town","shop"]
-    val_dict={}
-    for i in range(len(names)):
-        val_dict[names[i]]=values[0][i]
-
-    return pd.DataFrame(val_dict,index=[0])
+    return pd.DataFrame(values,columns=names)
 
 def edit_info(val,set,id):
     # edit distribution information

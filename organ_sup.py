@@ -4,7 +4,6 @@ import pandas as pd
 import time
 def menu2(col1,col2,col3):
     exp=col3.expander("Supply field")
-    exp.write("""**About**""")
     radc2=exp.selectbox("",["fetch","add","edit","delete"])
     if radc2=="add":
         # add product info
@@ -20,14 +19,20 @@ def menu2(col1,col2,col3):
             exp.write("product Added successfully")
     elif radc2=="fetch":
         # input search by product id
-        search=exp.text_input("search by product id")
-        if exp.button("fetch product"):
-            exp.write("searching product")
-            progress=exp.progress(0)
-            for i in range(100):
-                time.sleep(0.01)
-                progress.progress(i+1)
-            st.dataframe(fetch_prod(search))
+        s_fetch_r=exp.radio("",["All","fetch"])
+        if s_fetch_r=="fetch":
+            search=exp.text_input("search by product id")
+            if exp.button("fetch product"):
+                exp.write("searching product")
+                progress=exp.progress(0)
+                for i in range(100):
+                    time.sleep(0.01)
+                    progress.progress(i+1)
+                s_fetch_d=fetch_prod()
+                s_f_fetch_d=s_fetch_d[s_fetch_d["pid"]==int(search)]
+                col3.dataframe(s_f_fetch_d)
+        elif s_fetch_r=="All":
+            col3.dataframe(fetch_prod())
 
 
     elif radc2=="edit":
@@ -59,18 +64,15 @@ def add_prod(name,desc):
     conn.commit()
 
 
-def fetch_prod(id):
+def fetch_prod():
     # sqlite fetch code here
     conn=sqlite3.connect("organ.db")
     con=conn.cursor()
-    con.execute("select *from orgsupply where pid=?",(id,))
+    con.execute("select *from orgsupply")
     values=con.fetchall()
     names=["pid","name","description"]
-    val_dict={}
-    for i in range(len(names)):
-        val_dict[names[i]]=values[0][i]
 
-    return pd.DataFrame(val_dict,index=[0])
+    return pd.DataFrame(values,columns=names)
 
 def edit_prod(val,set,id):
     # sqlite edit code
