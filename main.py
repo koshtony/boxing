@@ -4,6 +4,7 @@ from organ_emp import menu
 from PIL import Image
 from dist_prod import dist_menu
 from auth import logs,retrv_log
+from organ_emp import fetch_emp
 # created navigation menu using radio button
 st.get_option("theme.textColor")
 #creating login page
@@ -11,16 +12,20 @@ def back_im():
     background = Image.open('back.jpeg')
     st.image(background, width=650)
 
-ex=st.expander("COMPANY INFO")
+ex=st.expander("COMPANY INFO AND REGULATIONS")
 ex.write("Things to note")
 log_ex=st.sidebar.expander("Create User")
 name=log_ex.text_input("Name")
 eid=log_ex.text_input("Employee Id")
 pwd=log_ex.text_input("Create Password",type="password")
 pwd2=log_ex.text_input("Confirm Password",type="password")
+info=fetch_emp()
+
 if log_ex.button("Create Username"):
     if pwd!=pwd2:
-        st.write("password not same")
+        st.sidebar.write("password doesn't match")
+    elif info[info["emp id"]==int(eid)].shape[0]==0:
+        st.sidebar.error("Employee id not recognised")
     else:
         logs(name,eid,pwd2)
         st.write("User created successfully")
