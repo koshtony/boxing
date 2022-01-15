@@ -2,3 +2,4 @@ streamlit
 pysqlite3
 Pillow
 pandas
+streamlit-authenticator
