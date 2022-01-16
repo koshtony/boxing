@@ -15,6 +15,7 @@ def back_im():
 
 ex=st.expander("COMPANYS INFO AND REGULATIONS")
 ex.write("Things to note")
+ex.write("Order Here [link](https://boxingsales.herokuapp.com/home)")
 log_ex=st.sidebar.expander("Create User")
 name=log_ex.text_input("Name")
 eid=log_ex.text_input("Employee Id")

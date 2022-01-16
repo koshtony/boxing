@@ -73,19 +73,20 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 @app.route('/home',methods=['GET','POST'])
+@login_required
 def home():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
     form=orderform()
-    if form.validate_on_submit:
-        print(form.typ.data)
+    if form.validate_on_submit():
+        print(form.phone.data)
         savings=orders(eid=current_user.eid,fname=form.fnames.data,phone=form.phone.data,
         item=form.item.data,shop=form.shop.data,region=form.region.data,
         quantity=form.quantity.data,typ=form.typ.data,members=current_user)
         data.session.add(savings)
         data.session.commit()
-        #return redirect(url_for('cart'))
     return render_template('orders.html',form=form)
+
 
 if __name__=="__main__":
     app.run(debug=True)
