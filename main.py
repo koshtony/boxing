@@ -23,7 +23,7 @@ pwd=log_ex.text_input("Create Password",type="password")
 pwd2=log_ex.text_input("Confirm Password",type="password")
 info=fetch_emp()
 
-if log_ex.button("Create Username"):
+if log_ex.button("Create User"):
     if pwd!=pwd2:
         st.sidebar.write("password doesn't match")
     elif info[info["emp id"]==int(eid)].shape[0]==0:
