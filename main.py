@@ -5,6 +5,7 @@ from PIL import Image
 from dist_prod import dist_menu
 from auth import logs,retrv_log
 from organ_emp import fetch_emp
+from supplier import incoming,download
 # created navigation menu using radio button
 st.get_option("theme.textColor")
 #creating login page
@@ -42,6 +43,18 @@ if login_status==True:
         menu()
     elif rad1=="DISTRIBUTION MANAGEMENT":
         dist_menu()
+    elif rad1=="SUPPLY MANAGEMENT":
+        st.header("Incoming Orders")
+        st.dataframe(incoming())
+        file=download(incoming())
+        st.download_button(
+        "Export",
+        file,
+        "incoming_orders.csv",
+        "text/csv",
+        key="download-csv"
+        )
+
 elif login_status==False:
     back_im()
     st.sidebar.error("incorrect password")
