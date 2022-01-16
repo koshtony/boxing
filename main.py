@@ -12,7 +12,7 @@ def back_im():
     background = Image.open('back.jpeg')
     st.image(background, width=650)
 
-ex=st.expander("COMPANY INFO AND REGULATIONS")
+ex=st.expander("COMPANYS INFO AND REGULATIONS")
 ex.write("Things to note")
 log_ex=st.sidebar.expander("Create User")
 name=log_ex.text_input("Name")
