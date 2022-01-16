@@ -55,7 +55,7 @@ class orderform(FlaskForm):
         ('others','others')])
     submit=SubmitField('Order')
     #phone=PhoneNumberField("phone number",validators=[DataRequired()])
-@app.route('/login',methods=['GET','POST'])
+@app.route('/',methods=['GET','POST'])
 def login():
 
     form=logform()

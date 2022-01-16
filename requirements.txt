@@ -9,3 +9,4 @@ Flask-Login
 DateTime
 Flask-WTF
 WTForms
+gunicorn
