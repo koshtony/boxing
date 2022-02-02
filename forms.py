@@ -85,7 +85,8 @@ def home():
         quantity=form.quantity.data,typ=form.typ.data,members=current_user)
         data.session.add(savings)
         data.session.commit()
-    return render_template('orders.html',form=form)
+        return redirect(url_for('login'))
+    return render_template('order.html',form=form)
 
 
 if __name__=="__main__":
