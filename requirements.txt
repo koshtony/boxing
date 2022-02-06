@@ -10,3 +10,4 @@ DateTime
 Flask-WTF
 WTForms
 gunicorn
+lxml
