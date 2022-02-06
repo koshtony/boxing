@@ -5,7 +5,9 @@ from PIL import Image
 from dist_prod import dist_menu
 from auth import logs,retrv_log
 from organ_emp import fetch_emp
-from supplier import incoming,download
+from supplier import incoming,download,dispatch
+import sqlite3
+import pandas as pd
 # created navigation menu using radio button
 st.get_option("theme.textColor")
 #creating login page
@@ -63,6 +65,24 @@ if login_status==True:
         "text/csv",
         key="download-csv"
         )
+        sel_=st.selectbox("dispatch order id",incoming()[0].id)
+        cons=sqlite3.connect("dispatch.db")
+        dis_data=pd.read_sql_query("select *from dispatch",cons)
+        if list(dis_data.id).count(sel_)>0:
+            st.warning("order already dispatched")
+        if st.button("Dispatch"):
+            st.header("Dispatched Orders")
+            st.dataframe(dispatch(incoming()[0],sel_))
+            file_=download(dispatch(incoming()[0],sel_))
+            st.download_button(
+            "Export",
+            file_,
+            "dispatched_orders.csv",
+            "text/csv",
+            key="download-csv"
+            )
+
+
 
 elif login_status==False:
     back_im()

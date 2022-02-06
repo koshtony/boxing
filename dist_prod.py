@@ -22,6 +22,7 @@ def dist_menu():
         st.dataframe(fetch_info())
     pander=c1.expander("Add info")
     price=pander.text_input("product price")
+    pro=pander.text_input("product name")
     quantity=pander.text_input("Quantity")
     region=pander.selectbox("Region",["Central","Rift"])
     town=pander.selectbox("Town",["Nairobi","Mombasa"])
@@ -32,7 +33,7 @@ def dist_menu():
         for i in range(100):
             time.sleep(0.01)
             p.progress(i+1)
-        add_info(price,quantity,desc,region,town,shop)
+        add_info(price,pro,quantity,desc,region,town,shop)
     pander3=c2.expander("Delete")
     d_id = pander3.text_input("pid")
     if pander3.button("Delete"):
@@ -54,21 +55,21 @@ def dist_menu():
 
         edit_info(change,set,edit_id)
 
-def add_info(price,quantity,desc,region,town,shop):
+def add_info(price,product,quantity,desc,region,town,shop):
     # adding distribution data
-    conn=sqlite3.connect("organ.db")
+    conn=sqlite3.connect("dist.db")
     con=conn.cursor()
-    con.execute("create table if not exists dist_prod(pid integer primary key autoincrement,price float,quantity float,description text,region text,town text,shop text,foreign key (pid) references orgsupply(pid))")
-    con.execute("insert into dist_prod (price,quantity,description,region,town,shop) values (?,?,?,?,?,?)",(price,quantity,desc,region,town,shop))
+    con.execute("create table if not exists dist_prod(pid integer primary key autoincrement,price float,product string,quantity float,description text,region text,town text,shop text,foreign key (pid) references orgsupply(pid))")
+    con.execute("insert into dist_prod (price,product,quantity,description,region,town,shop) values (?,?,?,?,?,?,?)",(price,product,quantity,desc,region,town,shop))
     conn.commit()
 
 def fetch_info():
     # extract distribution data
-    conn=sqlite3.connect("organ.db")
+    conn=sqlite3.connect("dist.db")
     con=conn.cursor()
     con.execute("select *from dist_prod")
     values=con.fetchall()
-    names=["pid","price","quantity","description","region","town","shop"]
+    names=["pid","price","product","quantity","description","region","town","shop"]
     return pd.DataFrame(values,columns=names)
 
 def edit_info(val,set,id):
