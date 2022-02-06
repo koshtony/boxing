@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_login import LoginManager as l
 from flask_wtf import FlaskForm
+import sqlite3
+import pandas as pd
 from wtforms.validators import DataRequired,Email,EqualTo,Length,ValidationError
 from wtforms import StringField,SelectField,SubmitField,PasswordField,BooleanField,TextAreaField
 from flask_login import current_user,UserMixin,login_user,logout_user,UserMixin,login_required
@@ -88,6 +90,15 @@ def home():
         return redirect(url_for('login'))
     return render_template('order.html',form=form)
 
+@app.route('/data')
+def display():
+    con=sqlite3.connect("suppliers.db")
+    df=pd.read_sql_query("select *from orders",con)
+    html_data=df.to_html()
+    html_file=open("template/data.html","w")
+    html_file.write(html_data)
+    html_file.close()
+    return render_template("data.html")
 
 if __name__=="__main__":
     app.run(debug=True)
