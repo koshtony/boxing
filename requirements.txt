@@ -13,3 +13,4 @@ gunicorn
 lxml
 seaborn
 plotly
+Flask-RESTful
