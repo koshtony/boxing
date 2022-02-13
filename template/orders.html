@@ -1,121 +1,109 @@
 <!doctype html>
 <html lang="en">
+{% block head %}
   <head>
-  	<title>Contact Form 09</title>
+  	<title>ORDER</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-	<link rel="stylesheet" href="static/style.css">
+	<link rel="stylesheet" href="static/s1.css">
+	<body>
 
-	</head>
-	<body bgcolor=”#800000">
 	<section class="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-md-6 text-center mb-5">
-					<h2 class="heading-section">Order Here</h2>
+
+
+       <h3 style="color:Tomato;">  Boxing Sales </h3>
+
 				</div>
 			</div>
 			<div class="row justify-content-center">
-				<div class="col-lg-10 col-md-12">
-					<div class="wrapper">
-						<div class="row justify-content-center">
-							<div class="col-lg-8 mb-5">
-								<div class="row">
-									<div class="col-md-4">
-										<div class="dbox w-100 text-center">
-					        		<div class="icon d-flex align-items-center justify-content-center">
-					        			<span class="fa fa-map-marker"></span>
-					        		</div>
-					        		<div class="text">
-						            <p><span>Address:</span>00100 Nairobi</p>
-						          </div>
-					          </div>
-									</div>
-									<div class="col-md-4">
-										<div class="dbox w-100 text-center">
-					        		<div class="icon d-flex align-items-center justify-content-center">
-					        			<span class="fa fa-phone"></span>
-					        		</div>
-					        		<div class="text">
-						            <p><span>Phone:</span> <a href="tel://0712110972">+ 254 712110972</a></p>
-						          </div>
-					          </div>
-									</div>
-									<div class="col-md-4">
-										<div class="dbox w-100 text-center">
-					        		<div class="icon d-flex align-items-center justify-content-center">
-					        			<span class="fa fa-paper-plane"></span>
-					        		</div>
-					        		<div class="text">
-						            <p><span>Email:</span> <a href="mailto:info@yoursite.com">tony@yoursite.com</a></p>
-						          </div>
-					          </div>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-8">
-								<div class="contact-wrap">
+				<div class="col-md-12 col-lg-10">
+					<div class="wrap d-md-flex">
+						<div class="img" style="background-image: url(static/back.jpeg);">
+			      </div>
+						<div class="login-wrap p-4 p-md-5">
+			      	<div class="d-flex">
+			      		<div class="w-100">
+			      			<h3 class="mb-4">ORDER</h3>
+			      		</div>
 
-									<div id="form-message-warning" class="mb-4 w-100 text-center"></div>
-				      		<div id="form-message-success" class="mb-4 w-100 text-center">
-				            Order sent, thank you!
-				      		</div>
-									<form method="POST" id="contactForm" name="contactForm" class="contactForm" style="color:Tomato;">
+			      	</div>
+							<form action="" method="POST" class="signin-form">
+								{{form.hidden_tag()}}
+                <div class="form-group mb-3">
+                {{form.fnames.label(class="fom-control-label")}}
+                            {{form.fnames(class="form-control form-control-lg")}}
+                  </div>
+
+                <div class="form-group mb-3">
+                  {{form.phone.label(class="fom-control-label")}}
+                        {{form.phone(class="form-control form-control-lg",placeholder="+254722333444")}}
+                </div>
+                <div class="form-group mb-3">
+                          {{form.item.label(class="fom-control-label")}}
+                                {{form.item(class="form-control form-control-lg")}}
+
+                 </div>
+                 <div class="form-group mb-3">
+                  {{form.size.label(class="fom-control-label")}}
+                         {{form.size(class="form-control form-control-lg")}}
+                 </div>
+                 <div class="form-group mb-3">
+                   {{form.quant.label(class="fom-control-label")}}
+                         {{form.quant(class="form-control form-control-lg")}}
+                </div>
+                <div class="form-group mb-3">
+                 {{form.desc.label(class="fom-control-label")}}
+                        {{form.desc(class="form-control form-control-lg")}}
+                </div>
+                <div class="form-group mb-3">
+                 {{form.sprice.label(class="fom-control-label")}}
+                        {{form.sprice(class="form-control form-control-lg")}}
+                </div>
+                <div class="form-group mb-3">
+                 {{form.dprice.label(class="fom-control-label")}}
+                        {{form.dprice(class="form-control form-control-lg")}}
+                </div>
                     <div class="form-group mb-3">
-    							{{form.fnames.label(class="fom-control-label")}}
-                              {{form.fnames(class="form-control form-control-lg")}}
-    			      		</div>
-    		            <div class="form-group mb-3">
-    		            	{{form.phone.label(class="fom-control-label")}}
-                            {{form.phone(class="form-control form-control-lg")}}
-                    </div>
+                  {{form.ddate.label(class="fom-control-label")}}
+                        {{form.ddate(class="form-control form-control-lg",placeholder="01/01/2022 08:30")}}
+                </div>
+                <div class="form-group mb-3">
+                 {{form.customer.label(class="fom-control-label")}}
+                        {{form.customer(class="form-control form-control-lg")}}
+                </div>
+                <div class="form-group mb-3">
+                 {{form.town.label(class="fom-control-label")}}
+                        {{form.town(class="form-control form-control-lg")}}
+                </div>
+                <div class="form-group mb-3">
+                 {{form.loc.label(class="fom-control-label")}}
+                        {{form.loc(class="form-control form-control-lg",placeholder="street name: house no")}}
+                </div>
+
                     <div class="form-group mb-3">
-            		            	{{form.item.label(class="fom-control-label")}}
-                                    {{form.item(class="form-control form-control-lg")}}
-
-    		             </div>
-                     <div class="form-group mb-3">
-                       {{form.shop.label(class="fom-control-label")}}
-                             {{form.shop(class="form-control form-control-lg")}}
+                        {{form.submit(class="btn btn-outline-info")}}
                     </div>
-                    <div class="form-group mb-3">
-                     {{form.region.label(class="fom-control-label")}}
-                            {{form.region(class="form-control form-control-lg")}}
-                    </div>
-                    <div class="form-group mb-3">
-                     {{form.quantity.label(class="fom-control-label")}}
-                            {{form.quantity(class="form-control form-control-lg")}}
-                    </div>
-                        <div class="form-group mb-3">
-    		            	{{form.typ.label(class="fom-control-label")}}
-                            {{form.typ(class="form-control form-control-lg")}}
-
-    		            </div>
-
-                        <div class="form-group mb-3">
-                            {{form.submit(class="btn btn-outline-info")}}
-                        </div>
-
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
+		          </form>
+		        </div>
+		      </div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<script src="static/jq.js"></script>
-  <script src="static/p.js"></script>
-  <script src="static/bootstrap.min.js"></script>
-  <script src="static/validate.js"></script>
-  <script src="static/main.js"></script>
+	<script src="static/j.js"></script>
+  <script src="static/popper.js"></script>
+  <script src="static/bms.js"></script>
+  <script src="static/m.js"></script>
 
 	</body>
+{% endblock %}
 </html>

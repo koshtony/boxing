@@ -15,3 +15,8 @@ def dispatch(data,sel):
     sel_data=pd.read_sql_query('select *from dispatch',con2)
     # delete from incoming
     return sel_data
+def delete_inc(id):
+    conn=sq.connect("dispatch.db")
+    con=conn.cursor()
+    con.execute("delete from dispatch where id=?",(id,))
+    conn.commit()

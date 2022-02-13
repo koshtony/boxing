@@ -1,11 +1,12 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 from organ_emp import menu
+from style import colors
 from PIL import Image
 from dist_prod import dist_menu
 from auth import logs,retrv_log
 from organ_emp import fetch_emp
-from supplier import incoming,download,dispatch
+from supplier import incoming,download,dispatch,delete_inc
 import sqlite3
 import pandas as pd
 # created navigation menu using radio button
@@ -14,7 +15,8 @@ st.get_option("theme.textColor")
 hide_streamlit_style = """
 <style>
 #MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
+#footer {visibility: hidden;}
+#body{background-color: Blue;}
 </style>
 
 """
@@ -56,7 +58,7 @@ if login_status==True:
         dist_menu()
     elif rad1=="SUPPLY MANAGEMENT":
         st.header("Incoming Orders")
-        st.dataframe(incoming()[0])
+        st.dataframe(incoming()[0].style.apply(colors))
         file=download(incoming()[0])
         st.download_button(
         "Export",
@@ -70,17 +72,18 @@ if login_status==True:
         dis_data=pd.read_sql_query("select *from dispatch",cons)
         if list(dis_data.id).count(sel_)>0:
             st.warning("order already dispatched")
-        if st.button("Dispatch"):
-            st.header("Dispatched Orders")
-            st.dataframe(dispatch(incoming()[0],sel_))
-            file_=download(dispatch(incoming()[0],sel_))
-            st.download_button(
-            "Export",
-            file_,
-            "dispatched_orders.csv",
-            "text/csv",
-            key="download-csv"
-            )
+        else:
+            if st.button("Dispatch"):
+                st.header("Dispatched Orders")
+                st.dataframe(dispatch(incoming()[0],sel_))
+                file_=download(dispatch(incoming()[0],sel_))
+                st.download_button(
+                "Export",
+                file_,
+                "dispatched_orders.csv",
+                "text/csv",
+                key="download-csv"
+                )
 
 
 

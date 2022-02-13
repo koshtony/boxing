@@ -2,87 +2,79 @@ import streamlit as st
 import sqlite3
 import pandas as pd
 import time
+from organ_sup import fetch_prod
+from items import fetch
 def dist_menu():
-    c1,c2=st.columns((1,1))
-    pander1=c1.expander("Fetch")
-    fetch_r=pander1.radio("",["All","filter"])
-    if fetch_r=="filter":
-        id=pander1.text_input("Fetch by pid")
-        if pander1.button("fetch"):
-            data=fetch_info()
-            f_data=data[data["pid"]==int(id)]
-            st.write("--fetching")
+        pander=st.expander("Add stock")
+        Barcode=pander.text_input("Scan Barcode")
+        Item_name=pander.text_input("Item name")
+        Item_colour=pander.text_input("Item colour")
+        Item_Desc=pander.text_input("Item description")
+        Item_size=pander.text_input("Item size")
+        Item_material=pander.text_input("Item_material")
+        Buying_price=pander.text_input("Buying Price")
+        Category=pander.selectbox("Category",fetch()["category"].tolist())
+        Family=pander.selectbox("Family",fetch()["family"].tolist())
+        sub_family=pander.selectbox("Sub Family",fetch()["category"].tolist())
+        Brand_name=pander.text_input("Brand_name")
+        supplier=pander.selectbox("Supplier Name",fetch_prod()["supplier"].tolist())
+        supplier_NO=pander.text_input("Supplier Phone Number")
+        shop=pander.selectbox("Shop Name",fetch_prod()["shop"].tolist())
+        if pander.button("Confirm"):
+            p=st.progress(0)
+            for i in range(100):
+                time.sleep(0.01)
+                p.progress(i+1)
+            add_info(Barcode,Item_name,Item_colour,Item_Desc,Item_size,Item_material,Buying_price,Category,Family,sub_family,Brand_name,supplier,supplier_NO,shop)
+            if True:
+                st.info("Item added successfully")
+        c1,c2=st.columns((1,1))
+        pander1=c1.expander("Fetch")
+        fetch_r=pander1.radio("",["All","filter"])
+        if fetch_r=="filter":
+            id=pander1.text_input("Fetch by pid")
+            if pander1.button("fetch"):
+                data=fetch_info()
+                f_data=data[data["pid"]==int(id)]
+                st.write("--fetching")
+                p=st.progress(0)
+                for i in range(100):
+                    time.sleep(0.01)
+                    p.progress(i+1)
+
+                st.dataframe(f_data)
+        elif fetch_r=="All":
+            st.dataframe(fetch_info())
+        pander3=c2.expander("Delete")
+        d_id = pander3.text_input("pid")
+        if pander3.button("Delete"):
             p=st.progress(0)
             for i in range(100):
                 time.sleep(0.01)
                 p.progress(i+1)
 
-            st.dataframe(f_data)
-    elif fetch_r=="All":
-        st.dataframe(fetch_info())
-    pander=c1.expander("Add info")
-    price=pander.text_input("product price")
-    pro=pander.text_input("product name")
-    quantity=pander.text_input("Quantity")
-    region=pander.selectbox("Region",["Central","Rift"])
-    town=pander.selectbox("Town",["Nairobi","Mombasa"])
-    shop=pander.text_input("Shop Name")
-    desc=pander.text_area("Product description")
-    if pander.button("Confirm"):
-        p=st.progress(0)
-        for i in range(100):
-            time.sleep(0.01)
-            p.progress(i+1)
-        add_info(price,pro,quantity,desc,region,town,shop)
-    pander3=c2.expander("Delete")
-    d_id = pander3.text_input("pid")
-    if pander3.button("Delete"):
-        p=st.progress(0)
-        for i in range(100):
-            time.sleep(0.01)
-            p.progress(i+1)
+            delete_info(d_id)
+            if True:
+                st.info("Item Deleted successfully")
 
-        delete_info(d_id)
-    pander4=c2.expander("Edit")
-    edit_id=pander4.text_input("Edit by pid")
-    change=pander4.selectbox("Field to edit",["quantity","region","town","shop"])
-    set=pander4.text_input("New Value")
-    if pander4.button("Edit"):
-        p=st.progress(0)
-        for i in range(100):
-            time.sleep(0.01)
-            p.progress(i+1)
-
-        edit_info(change,set,edit_id)
-
-def add_info(price,product,quantity,desc,region,town,shop):
+def add_info(Barcode,Item_name,Item_colour,Item_Desc,Item_size,Item_material,Buying_price,Category,Family,sub_family,Brand_name,supplier,supplier_NO,shop):
     # adding distribution data
-    conn=sqlite3.connect("dist.db")
+    conn=sqlite3.connect("stock.db")
     con=conn.cursor()
-    con.execute("create table if not exists dist_prod(pid integer primary key autoincrement,price float,product string,quantity float,description text,region text,town text,shop text,foreign key (pid) references orgsupply(pid))")
-    con.execute("insert into dist_prod (price,product,quantity,description,region,town,shop) values (?,?,?,?,?,?,?)",(price,product,quantity,desc,region,town,shop))
+    con.execute("create table if not exists dist_prod(pid integer primary key autoincrement,Barcode,Item_name string,Item_colour string,Item_Desc text,Item_size string,Item_material string,Buying_price float,Category string,Family string,sub_family string,Brand_name string,supplier string,supplier_NO string,shop string)")
+    con.execute("insert into dist_prod (Barcode,Item_name,Item_colour,Item_Desc,Item_size,Item_material,Buying_price,Category,Family,sub_family,Brand_name,supplier,supplier_NO,shop) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(Barcode,Item_name,Item_colour,Item_Desc,Item_size,Item_material,Buying_price,Category,Family,sub_family,Brand_name,supplier,supplier_NO,shop,))
     conn.commit()
 
 def fetch_info():
     # extract distribution data
-    conn=sqlite3.connect("dist.db")
-    con=conn.cursor()
-    con.execute("select *from dist_prod")
-    values=con.fetchall()
-    names=["pid","price","product","quantity","description","region","town","shop"]
-    return pd.DataFrame(values,columns=names)
+    conn=sqlite3.connect("stock.db")
+    data = pd.read_sql_query("select *from dist_prod",conn)
+    return data
 
-def edit_info(val,set,id):
-    # edit distribution information
-    conn=sqlite3.connect("organ.db")
-    con=conn.cursor()
-    cmd="update dist_prod set "+str(val)+" =? "+"where pid=?"
-    con.execute(cmd,(set,id,))
-    conn.commit()
 
 def delete_info(id):
     # delete distribution info by id
-    conn=sqlite3.connect("organs.db")
+    conn=sqlite3.connect("stock.db")
     con=conn.cursor()
     con.execute("delete from dist_prod where pid=?",(id,))
     conn.commit()
