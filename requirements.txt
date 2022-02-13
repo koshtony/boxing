@@ -11,3 +11,5 @@ Flask-WTF
 WTForms
 gunicorn
 lxml
+seaborn
+plotly

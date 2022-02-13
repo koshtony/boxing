@@ -7,7 +7,7 @@ from items import fetch
 def dist_menu():
         pander=st.expander("Add stock")
         Barcode=pander.text_input("Scan Barcode")
-        Item_name=pander.text_input("Item name")
+        Item_name=pander.selectbox("Item name",fetch()["name"].tolist())
         Item_colour=pander.text_input("Item colour")
         Item_Desc=pander.text_input("Item description")
         Item_size=pander.text_input("Item size")

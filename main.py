@@ -7,8 +7,10 @@ from dist_prod import dist_menu
 from auth import logs,retrv_log
 from organ_emp import fetch_emp
 from supplier import incoming,download,dispatch,delete_inc
+from customer import get_customer
 import sqlite3
 import pandas as pd
+from market import visuals
 # created navigation menu using radio button
 st.get_option("theme.textColor")
 #creating login page
@@ -58,8 +60,8 @@ if login_status==True:
         dist_menu()
     elif rad1=="SUPPLY MANAGEMENT":
         st.header("Incoming Orders")
-        st.dataframe(incoming()[0].style.apply(colors))
-        file=download(incoming()[0])
+        st.dataframe(incoming().style.apply(colors))
+        file=download(incoming())
         st.download_button(
         "Export",
         file,
@@ -67,16 +69,14 @@ if login_status==True:
         "text/csv",
         key="download-csv"
         )
-        sel_=st.selectbox("dispatch order id",incoming()[0].id)
-        cons=sqlite3.connect("dispatch.db")
-        dis_data=pd.read_sql_query("select *from dispatch",cons)
-        if list(dis_data.id).count(sel_)>0:
+        sel_=st.selectbox("dispatch order id",incoming().id)
+        if list(incoming().id).count(sel_)>1:
             st.warning("order already dispatched")
         else:
             if st.button("Dispatch"):
                 st.header("Dispatched Orders")
-                st.dataframe(dispatch(incoming()[0],sel_))
-                file_=download(dispatch(incoming()[0],sel_))
+                st.dataframe(dispatch(incoming(),sel_))
+                file_=download(dispatch(incoming(),sel_))
                 st.download_button(
                 "Export",
                 file_,
@@ -84,6 +84,17 @@ if login_status==True:
                 "text/csv",
                 key="download-csv"
                 )
+    elif rad1=="CUSTOMER INFO":
+        st.dataframe(get_customer())
+    elif rad1=="MARKET INFO":
+        data_cat=st.sidebar.selectbox("choose data",["incoming","dispatched"])
+        if data_cat=="incoming":
+            visuals(incoming())
+        elif data_cat=="dispatched":
+            conx=sqlite3.connect("dispatch.db")
+            data=pd.read_sql_query("select *from dispatch",conx)
+            visuals(data)
+
 
 
 

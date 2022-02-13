@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import sqlite3 as sq
 def gui():
-    drop=st.expander("shops")
+    drop=st.expander("Items")
     opt=drop.selectbox("",["fetch","Add","Delete"])
     if opt=="fetch":
         st.dataframe(fetch())

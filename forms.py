@@ -4,17 +4,20 @@ from datetime import datetime
 from flask_login import LoginManager as l
 from flask_wtf import FlaskForm
 import sqlite3
+from pop_users import con_both
 import pandas as pd
 from items import fetch
 from wtforms.validators import DataRequired,Email,EqualTo,Length,ValidationError
 from wtforms import StringField,IntegerField,SelectField,SubmitField,PasswordField,BooleanField,TextAreaField
 from flask_login import current_user,UserMixin,login_user,logout_user,UserMixin,login_required
+from flask_restful import Resource,Api
 app=Flask(__name__,template_folder='template')
 key='@boxing'
 app.config['SECRET_KEY']=key
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///orders.db'
 data=SQLAlchemy(app)
 lm=l(app)
+api=Api(app)
 @lm.user_loader
 def load_user(s_id):
     return member.query.get(int(s_id))
@@ -22,7 +25,7 @@ class member(data.Model,UserMixin):
     id=data.Column(data.Integer,primary_key=True)
     eid=data.Column(data.Integer,nullable=False)
     password=data.Column(data.String,nullable=False)
-    image=data.Column(data.String(50),nullable=False,default='default.jpg')
+    image=data.Column(data.String(50),nullable=True,default='default.jpg')
     relt=data.relationship('orders',backref='members',lazy=True)
     def __repr__(self):
         return str(self.id)
@@ -70,7 +73,7 @@ class orderform(FlaskForm):
     #phone=PhoneNumberField("phone number",validators=[DataRequired()])
 @app.route('/',methods=['GET','POST'])
 def login():
-
+    con_both()
     form=logform()
     if form.validate_on_submit():
         credentials=member.query.filter_by(eid=form.eid.data).first()
@@ -88,20 +91,22 @@ def logout():
 @app.route('/home',methods=['GET','POST'])
 @login_required
 def home():
-    if not current_user.is_authenticated:
-        return redirect(url_for('login'))
     form=orderform()
     if form.validate_on_submit:
         print(form.phone.data)
         savings=orders(eid=current_user.eid,fname=form.fnames.data,phone=form.phone.data,
-        item=form.item.data,size=form.size.data,quantity=form.quant.data,desc=form.desc.data,sprice=form.sprice.data,
+        item=form.item.data,size=form.size.data,quant=form.quant.data,desc=form.desc.data,sprice=form.sprice.data,
         dprice=form.dprice.data,ddate=form.ddate.data,customer=form.customer.data,cphone=form.cphone.data,
         town=form.town.data,loc=form.loc.data,members=current_user)
         data.session.add(savings)
         data.session.commit()
-        return redirect(url_for('login'))
     return render_template('orders.html',form=form)
-
+class order(Resource):
+    def get(self):
+        conx=sqlite3.connect("orders.db")
+        data=pd.read_sql_query("select *from orders",conx)
+        return data.to_json()
+api.add_resource(order,"/incoming")
 
 if __name__=="__main__":
     app.run(debug=True)

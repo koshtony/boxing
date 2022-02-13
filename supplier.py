@@ -1,10 +1,13 @@
 import streamlit as st
 import sqlite3 as sq
 import pandas as pd
+import requests
+import json
 # fetch orders made
 def incoming():
-    sc_data=pd.read_html("https://boxingsales.herokuapp.com/data")
-    return sc_data
+    res=requests.get("http://127.0.0.1:5000/incoming")
+    j_data=json.loads(res.json())
+    return pd.DataFrame(j_data)
 def download(data):
     return data.to_csv().encode('utf-8')
 def dispatch(data,sel):
