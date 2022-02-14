@@ -100,6 +100,7 @@ def home():
         town=form.town.data,loc=form.loc.data,members=current_user)
         data.session.add(savings)
         data.session.commit()
+        return redirect(url_for('login'))
     return render_template('orders.html',form=form)
 class order(Resource):
     def get(self):
