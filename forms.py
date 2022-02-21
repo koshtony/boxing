@@ -11,6 +11,8 @@ from wtforms.validators import DataRequired,Email,EqualTo,Length,ValidationError
 from wtforms import StringField,IntegerField,SelectField,SubmitField,PasswordField,BooleanField,TextAreaField
 from flask_login import current_user,UserMixin,login_user,logout_user,UserMixin,login_required
 from flask_restful import Resource,Api
+from item_form import connect
+from srs import sr_names
 app=Flask(__name__,template_folder='template')
 key='@boxing'
 app.config['SECRET_KEY']=key
@@ -55,22 +57,6 @@ class orders(data.Model):
     s_id=data.Column(data.Integer,data.ForeignKey('member.eid'),nullable=False)
     def __repr__(self):
         return str(self.id)
-class orderform(FlaskForm):
-    fnames=StringField("SR full name",validators=[DataRequired()])
-    phone=StringField("SR phone number",validators=[DataRequired()])
-    item=SelectField("Item",choices=[(i,i) for i in fetch()["name"].tolist()] ,validators=[DataRequired()])
-    size=IntegerField("Item size",validators=[DataRequired()])
-    quant=IntegerField("Quantity",validators=[DataRequired()])
-    desc=TextAreaField("Description",validators=[DataRequired()])
-    sprice=IntegerField("Selling Price",validators=[DataRequired()])
-    dprice=IntegerField("Delivery Price",validators=[DataRequired()])
-    ddate=StringField("Delivery Date",validators=[DataRequired()])
-    customer=StringField("Customer Name",validators=[DataRequired()])
-    cphone=StringField("Customer Phone No",validators=[DataRequired()])
-    town=StringField("Town",validators=[DataRequired()])
-    loc=TextAreaField("Describe location",validators=[DataRequired()])
-    submit=SubmitField('Order')
-    #phone=PhoneNumberField("phone number",validators=[DataRequired()])
 @app.route('/',methods=['GET','POST'])
 def login():
     con_both()
@@ -91,17 +77,20 @@ def logout():
 @app.route('/home',methods=['GET','POST'])
 @login_required
 def home():
-    form=orderform()
-    if form.validate_on_submit:
-        print(form.phone.data)
-        savings=orders(eid=current_user.eid,fname=form.fnames.data,phone=form.phone.data,
-        item=form.item.data,size=form.size.data,quant=form.quant.data,desc=form.desc.data,sprice=form.sprice.data,
-        dprice=form.dprice.data,ddate=form.ddate.data,customer=form.customer.data,cphone=form.cphone.data,
-        town=form.town.data,loc=form.loc.data,members=current_user)
+    if request.method=="POST":
+        savings=orders(eid=current_user.eid,fname=request.form["name"],phone=request.form["iphone"],
+        item=request.form["iname"],size=request.form["isize"],quant=request.form["quantity"],
+        desc=request.form["desc"],sprice=request.form["sprice"],
+        dprice=request.form["dprice"],ddate=request.form["ddate"],customer=request.form["cname"],cphone=request.form["cphone"],
+        town=request.form["town"],loc=request.form["loc"],members=current_user)
         data.session.add(savings)
         data.session.commit()
-        return redirect(url_for('login'))
-    return render_template('orders.html',form=form)
+        return redirect(url_for('success')) 
+    return render_template('order.html',names=connect(),srs=sr_names())
+@app.route("/home/success")
+@login_required
+def success():
+    return render_template("success.html")
 class order(Resource):
     def get(self):
         conx=sqlite3.connect("orders.db")
