@@ -78,7 +78,7 @@ def logout():
 @login_required
 def home():
     if request.method=="POST":
-        savings=orders(eid=current_user.eid,fname=request.form["name"],phone=request.form["iphone"],
+        savings=orders(eid=current_user.eid,fname=request.form["names"],phone=request.form["iphone"],
         item=request.form["iname"],size=request.form["isize"],quant=request.form["quantity"],
         desc=request.form["desc"],sprice=request.form["sprice"],
         dprice=request.form["dprice"],ddate=request.form["ddate"],customer=request.form["cname"],cphone=request.form["cphone"],
@@ -86,8 +86,8 @@ def home():
         data.session.add(savings)
         data.session.commit()
         return redirect(url_for('success')) 
-    return render_template('order.html',names=connect(),srs=sr_names())
-@app.route("/home/success")
+    return render_template('order.html',names=connect())
+@app.route("/success")
 @login_required
 def success():
     return render_template("success.html")
