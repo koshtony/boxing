@@ -1,13 +1,12 @@
-import streamlit as st
 import sqlite3 as sq
 import pandas as pd
 import requests
 import json
 # fetch orders made
 def incoming():
-    res=requests.get("https://boxingsales.herokuapp.com/incoming")
-    j_data=json.loads(res.json())
-    return pd.DataFrame(j_data)
+    conx=sq.connect("orders.db")
+    data=pd.read_sql_query("select *from orders",conx)
+    return data
 def download(data):
     return data.to_csv().encode('utf-8')
 def dispatch(data,sel):
@@ -23,3 +22,5 @@ def delete_inc(id):
     con=conn.cursor()
     con.execute("delete from dispatch where id=?",(id,))
     conn.commit()
+
+print(incoming())

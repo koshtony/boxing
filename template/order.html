@@ -202,11 +202,12 @@
         </div>
         <div class="item">
             <p>Item Name</p>
-            <select name="iname" id="iname">
+            <input list="magicHouses" id="iname" name="iname" placeholder="type here..." />
+          <datalist id="magicHouses">
                 {% for name in names %}
                 <option value="{{name}}">{{name}}</option>
                 {% endfor %}
-            </select>
+          </datalist>
           </div>
         <div class="item">
           <label for="isize">Item size<span>*</span></label>
@@ -246,8 +247,8 @@
             <input id="town" type="text" name="town" required/>
           </div>
           <div class="item">
-            <label for="loc">Location Link<span>*</span></label>
-            <input id="loc" type="text" name="loc" required/>
+            <label for="loc">Location or Link<span></span></label>
+            <input id="loc" type="text" name="loc"/>
           </div>
       
         <div class="btn-block">

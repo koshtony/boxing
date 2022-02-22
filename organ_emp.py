@@ -121,3 +121,7 @@ def delete_emp(id):
      conn=sqlite3.connect("organisation.db")
      con=conn.cursor()
      con.execute("delete from employees where empid=?",(id,))
+def get_emp_id(id):
+    connx=sqlite3.connect("organisation.db")
+    emp_data=pd.read_sql_query("select *from employees",connx)
+    return emp_data.loc[emp_data["empid"]==id]["name"].to_list()[0]

@@ -13,6 +13,7 @@ from flask_login import current_user,UserMixin,login_user,logout_user,UserMixin,
 from flask_restful import Resource,Api
 from item_form import connect
 from srs import sr_names
+from organ_emp import get_emp_id
 app=Flask(__name__,template_folder='template')
 key='@boxing'
 app.config['SECRET_KEY']=key
@@ -78,7 +79,7 @@ def logout():
 @login_required
 def home():
     if request.method=="POST":
-        savings=orders(eid=current_user.eid,fname=request.form["names"],phone=request.form["iphone"],
+        savings=orders(eid=current_user.eid,fname=get_emp_id(current_user.eid),phone=request.form["iphone"],
         item=request.form["iname"],size=request.form["isize"],quant=request.form["quantity"],
         desc=request.form["desc"],sprice=request.form["sprice"],
         dprice=request.form["dprice"],ddate=request.form["ddate"],customer=request.form["cname"],cphone=request.form["cphone"],
