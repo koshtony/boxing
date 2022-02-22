@@ -86,12 +86,21 @@ def home():
         town=request.form["town"],loc=request.form["loc"],members=current_user)
         data.session.add(savings)
         data.session.commit()
-        return redirect(url_for('success')) 
+        if True:
+            return redirect(url_for('success'))
+        else:
+            flash(f'contact Admin error encountered','danger')
     return render_template('order.html',names=connect())
 @app.route("/success")
 @login_required
 def success():
     return render_template("success.html")
+@app.errorhandler(404)
+def error404(error):
+    return render_template('404.html'),404 
+@app.errorhandler(500)
+def error500(error):
+    return render_template('500.html'),500
 class order(Resource):
     def get(self):
         conx=sqlite3.connect("orders.db")

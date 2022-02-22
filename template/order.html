@@ -8,7 +8,7 @@
       html, body {
       min-height: 100%;
       }
-      body, div, form, input, select, textarea, label { 
+      body, div, form, input, select, textarea, label {
       padding: 0;
       margin: 0;
       outline: none;
@@ -33,16 +33,16 @@
       padding: 20px;
       }
       form {
-      width: 50%;
+      width: 30%;
       padding: 20px;
       border-radius: 6px;
       background: rgb(9, 122, 214);
-      box-shadow: 0 0 8px  #cc7a00; 
+      box-shadow: 0 0 8px  #cc7a00;
       }
       .banner {
       position: relative;
       height: 300px;
-      background-image: url("/uploads/media/default/0001/02/234656e7acbca4625305dd37e7344af8eff32383.jpeg");  
+      background-image: url("/uploads/media/default/0001/02/234656e7acbca4625305dd37e7344af8eff32383.jpeg");
       background-size: cover;
       display: flex;
       justify-content: center;
@@ -51,7 +51,7 @@
       }
       .banner::after {
       content: "";
-      background-color: rgba(0, 0, 0, 0.2); 
+      background-color: rgba(0, 0, 0, 0.2);
       position: absolute;
       width: 100%;
       height: 100%;
@@ -157,7 +157,7 @@
       width: 150px;
       padding: 10px;
       border: none;
-      border-radius: 5px; 
+      border-radius: 5px;
       background: #cc7a00;
       font-size: 16px;
       color: #fff;
@@ -186,16 +186,19 @@
   </head>
   <body style="background-color:tomato";>
     #<a href='/logout'><button>LOGOUT</button></a>
+    {% with messages = get_flashed_messages() %}
+   {% if messages %}
+      {% for message in messages %}
+         {{ message }}
+      {% endfor %}
+   {% endif %}
+{% endwith %}
     <div class="testbox">
       <form action="/home" method="POST">
         <div class="banner">
           <h1>ORDER HERE</h1>
         </div>
         <p>Fill the required info</p>
-        <div class="item">
-          <label for="names"><span>*</span></label>
-          <input id="names" type="text" name="names" required/>
-          </div>
         <div class="item">
           <label for="iphone">Phone Number<span>*</span></label>
           <input id="iphone" type="number" name="iphone" required/>
@@ -250,7 +253,7 @@
             <label for="loc">Location or Link<span></span></label>
             <input id="loc" type="text" name="loc"/>
           </div>
-      
+
         <div class="btn-block">
           <button type="submit" href="/">SUBMIT</button>
         </div>

@@ -38,7 +38,7 @@ def menu():
         major=exp.text_input("Major")
         gradu=exp.date_input("Graduation date")
         salary=exp.text_input("Salary")
-        remark=exp.text_area("remark")
+        remark=exp.text_area("comments")
         if exp.button("ADD INFO"):
             p=st.progress(0)
             for i in range(100):
@@ -124,4 +124,9 @@ def delete_emp(id):
 def get_emp_id(id):
     connx=sqlite3.connect("organisation.db")
     emp_data=pd.read_sql_query("select *from employees",connx)
-    return emp_data.loc[emp_data["empid"]==id]["name"].to_list()[0]
+    x=[]
+    if len(emp_data.loc[emp_data["empid"]==id]["name"].to_list())>0:
+        x.append(emp_data.loc[emp_data["empid"]==id]["name"].to_list()[0])
+    else:
+        x.append("")
+    return x[0]

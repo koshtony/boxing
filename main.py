@@ -60,7 +60,7 @@ if login_status==True:
         dist_menu()
     elif rad1=="SUPPLY MANAGEMENT":
         st.header("Incoming Orders")
-        st.dataframe(incoming().style.apply(colors))
+        st.write(incoming().style.apply(colors))
         file=download(incoming())
         st.download_button(
         "Export",

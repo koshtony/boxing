@@ -22,5 +22,3 @@ def delete_inc(id):
     con=conn.cursor()
     con.execute("delete from dispatch where id=?",(id,))
     conn.commit()
-
-print(incoming())
