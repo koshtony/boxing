@@ -40,7 +40,7 @@ info=fetch_emp()
 if log_ex.button("Create User"):
     if pwd!=pwd2:
         st.sidebar.write("password doesn't match")
-    elif info[info["emp id"]==int(eid)].shape[0]==0:
+    elif info[info["empid"]==int(eid)].shape[0]==0:
         st.sidebar.error("Employee id not recognised")
     else:
         logs(name,eid,pwd2)
