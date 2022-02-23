@@ -17,7 +17,7 @@ from organ_emp import get_emp_id
 app=Flask(__name__,template_folder='template')
 key='@boxing'
 app.config['SECRET_KEY']=key
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///orders.db'
+app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///order.db'
 data=SQLAlchemy(app)
 lm=l(app)
 api=Api(app)
@@ -86,10 +86,7 @@ def home():
         town=request.form["town"],loc=request.form["loc"],members=current_user)
         data.session.add(savings)
         data.session.commit()
-        if True:
-            return redirect(url_for('success'))
-        else:
-            flash(f'contact Admin error encountered','danger')
+        return redirect(url_for('success'))
     return render_template('order.html',names=connect())
 @app.route("/success")
 @login_required
@@ -103,7 +100,7 @@ def error500(error):
     return render_template('500.html'),500
 class order(Resource):
     def get(self):
-        conx=sqlite3.connect("orders.db")
+        conx=sqlite3.connect("order.db")
         data=pd.read_sql_query("select *from orders",conx)
         return data.to_json()
 api.add_resource(order,"/incoming")

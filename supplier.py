@@ -4,8 +4,9 @@ import requests
 import json
 # fetch orders made
 def incoming():
-    conx=sq.connect("orders.db")
-    data=pd.read_sql_query("select *from orders",conx)
+    get_data=requests.get("https://boxingsales.herokuapp.com/incoming")
+    data=json.loads(get_data.json())
+    data=pd.DataFrame(data)
     return data
 def download(data):
     return data.to_csv().encode('utf-8')
@@ -22,3 +23,4 @@ def delete_inc(id):
     con=conn.cursor()
     con.execute("delete from dispatch where id=?",(id,))
     conn.commit()
+print(incoming())
