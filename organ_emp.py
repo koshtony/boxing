@@ -4,6 +4,7 @@ import sqlite3
 import time
 from PIL import Image
 from organ_sup import menu2
+import datetime
 from items import gui
 #import random
 def menu():
@@ -20,8 +21,8 @@ def menu():
         name=exp.text_input("full name")
         gender=exp.selectbox("Gender",["Male","Female",""])
         birth=exp.date_input("Date of birth")
-        doj=exp.date_input("date of joining")
-        resign=exp.date_input("date of resigning")
+        doj=exp.date_input("date of joining",min_value=datetime.date(year=1960,month=1,day=1))
+        resign=exp.date_input("date of resigning",min_value=datetime.date(year=1960,month=1,day=1))
         comp=exp.text_input("company")
         Dep=exp.text_input("Department")
         post=exp.text_input("Post Title")
@@ -36,7 +37,7 @@ def menu():
         marital=exp.selectbox("Marital status",["Married","Single",""])
         edu=exp.selectbox("Education Level",["Primary school","High school","Bachelors","Masters"])
         major=exp.text_input("Major")
-        gradu=exp.date_input("Graduation date")
+        gradu=exp.date_input("Graduation date",min_value=datetime.date(year=1960,month=1,day=1))
         salary=exp.text_input("Salary")
         remark=exp.text_area("comments")
         if exp.button("ADD INFO"):
