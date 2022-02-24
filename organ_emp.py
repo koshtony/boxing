@@ -20,7 +20,7 @@ def menu():
         id_no=exp.text_input("National id Number")
         name=exp.text_input("full name")
         gender=exp.selectbox("Gender",["Male","Female",""])
-        birth=exp.date_input("Date of birth")
+        birth=exp.date_input("Date of birth",min_value=datetime.date(year=1960,month=1,day=1))
         doj=exp.date_input("date of joining",min_value=datetime.date(year=1960,month=1,day=1))
         resign=exp.date_input("date of resigning",min_value=datetime.date(year=1960,month=1,day=1))
         comp=exp.text_input("company")
