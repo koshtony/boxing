@@ -54,7 +54,8 @@ def menu():
         # input search by employee id
         emp_rad=exp.radio("",["All","filter"])
         if emp_rad=="All":
-            col1.dataframe(fetch_emp())
+            if exp.button("fetch all"):
+                col1.dataframe(fetch_emp())
         elif emp_rad=="filter":
             search=exp.text_input("search by id")
             if exp.button("fetch"):
