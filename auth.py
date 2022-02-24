@@ -14,4 +14,4 @@ def retrv_log():
     names=["name","empid","password"]
 
     auths=pd.DataFrame(values,columns=names)
-    return list(auths.name),list(auths.empid),list(auths.password)
+    return [str(names) for names in auths.name],[str(id) for id in auths.empid],[str(pas) for pas in auths.password]
