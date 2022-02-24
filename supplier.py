@@ -4,9 +4,8 @@ import requests
 import json
 # fetch orders made
 def incoming():
-    get_data=requests.get("https://boxingsales.herokuapp.com/incoming")
-    data=json.loads(get_data.json())
-    data=pd.DataFrame(data)
+    conx=sq.connect("order.db")
+    data=pd.read_sql_query("select *from orders",conx)
     return data
 def download(data):
     return data.to_csv().encode('utf-8')
