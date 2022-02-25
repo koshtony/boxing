@@ -82,12 +82,12 @@ def menu():
 
     elif radc1=="delete":
         emp_id=exp.text_input("employee id to delete")
-        p=st.progress(0)
-        for i in range(100):
-            time.sleep(0.01)
-            p.progress(i+1)
-        st.balloons()
-        delete_emp(emp_id)
+        if exp.button("Delete"):
+            p=st.progress(0)
+            for i in range(100):
+                time.sleep(0.01)
+                p.progress(i+1)
+            delete_emp(emp_id)
     menu2(col1,col3)
 
 
