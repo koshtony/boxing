@@ -1,3 +1,6 @@
 [theme]
-base="dark"
-primaryColor="purple"
+primaryColor="#d33682"
+backgroundColor="#ffffff"
+secondaryBackgroundColor="#586e75"
+textColor="#fafafa"
+font="sans serif"
