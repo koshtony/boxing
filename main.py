@@ -14,15 +14,6 @@ from market import visuals
 # created navigation menu using radio button
 st.get_option("theme.textColor")
 #creating login page
-hide_streamlit_style = """
-<style>
-#MainMenu {visibility: hidden;}
-#footer {visibility: hidden;}
-#body{background-color: Blue;}
-</style>
-
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 def back_im():
     background = Image.open('back.jpeg')
     st.image(background, width=650)
