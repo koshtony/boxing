@@ -1,12 +1,12 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 from organ_emp import menu
-from style import colors
+from style import colors,colors2
 from PIL import Image
-from dist_prod import dist_menu
+from dist_prod import dist_menu,fetch_info,delete_info
 from auth import logs,retrv_log
 from organ_emp import fetch_emp
-from supplier import incoming,download,dispatch,delete_inc
+from supplier import incoming,download,dispatch,delete_inc,get_dis,order_menu
 from customer import get_customer
 import sqlite3
 import pandas as pd
@@ -51,32 +51,36 @@ if login_status==True:
         dist_menu()
     elif rad1=="SUPPLY MANAGEMENT":
         st.header("Incoming Orders")
-        st.write(incoming().style.apply(colors))
-        file=download(incoming())
-        st.download_button(
-        "Export",
-        file,
-        "incoming_orders.csv",
-        "text/csv",
-        key="download-csv"
-        )
-        sel_=st.selectbox("dispatch order id",incoming().id)
-        if list(incoming().id).count(sel_)>1:
+        order_menu()
+        sel_=st.text_input("barcode")
+        if list(get_dis().Barcode).count(sel_)>1:
             st.warning("order already dispatched")
         else:
             if st.button("Dispatch"):
-                st.header("Dispatched Orders")
-                st.dataframe(dispatch(incoming(),sel_))
-                file_=download(dispatch(incoming(),sel_))
-                st.download_button(
-                "Export",
-                file_,
-                "dispatched_orders.csv",
-                "text/csv",
-                key="download-csv"
-                )
+                    if list(fetch_info().Barcode).count(sel_)<1:
+                        st.warning("Item not found")
+                    else:
+                        st.header("Dispatched Orders")
+                        st.dataframe(dispatch(fetch_info(),sel_).style.apply(colors2))
+                        file_=download(dispatch(fetch_info(),sel_))
+                        delete_info(sel_)
+                        st.download_button(
+                        "Export",
+                        file_,
+                        "dispatched_orders.csv",
+                        "text/csv",
+                        key="download-csv"
+                        )
     elif rad1=="CUSTOMER INFO":
-        st.dataframe(get_customer())
+        st.dataframe(get_customer().style.apply(colors2))
+        file_=download(get_customer())
+        st.download_button(
+        "Export",
+        file_,
+        "customer.csv",
+        "text/csv",
+        key="download-csv"
+        )
     elif rad1=="MARKET INFO":
         data_cat=st.sidebar.selectbox("choose data",["incoming","dispatched"])
         if data_cat=="incoming":

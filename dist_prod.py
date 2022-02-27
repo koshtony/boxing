@@ -4,6 +4,7 @@ import pandas as pd
 import time
 from organ_sup import fetch_prod
 from items import fetch
+from supplier import download
 def dist_menu():
         pander=st.expander("Add stock")
         Barcode=pander.text_input("Scan Barcode")
@@ -28,6 +29,8 @@ def dist_menu():
             add_info(Barcode,Item_name,Item_colour,Item_Desc,Item_size,Item_material,Buying_price,Category,Family,sub_family,Brand_name,supplier,supplier_NO,shop)
             if True:
                 st.info("Item added successfully")
+            else:
+                st.error("Error Encountered")
         c1,c2=st.columns((1,1))
         pander1=c1.expander("Fetch")
         fetch_r=pander1.radio("",["All","filter"])
@@ -41,10 +44,31 @@ def dist_menu():
                 for i in range(100):
                     time.sleep(0.01)
                     p.progress(i+1)
-
-                st.dataframe(f_data)
+                try:
+                    st.dataframe(f_data)
+                    file_=download(f_data)
+                    st.download_button(
+                    "Export",
+                    file_,
+                    "filtered_stock.csv",
+                    "text/csv",
+                    key="download-csv"
+                    )
+                except:
+                    st.error("Error Encountered")
         elif fetch_r=="All":
-            st.dataframe(fetch_info())
+            try:
+                st.dataframe(fetch_info())
+                file_=download(fetch_info())
+                st.download_button(
+                "Export",
+                file_,
+                "all_stock.csv",
+                "text/csv",
+                key="download-csv"
+                )
+            except:
+                st.error("Error Encountered")
         pander3=c2.expander("Delete")
         d_id = pander3.text_input("pid")
         if pander3.button("Delete"):
@@ -56,6 +80,8 @@ def dist_menu():
             delete_info(d_id)
             if True:
                 st.info("Item Deleted successfully")
+            else:
+                st.error("Error Encountered")
 
 def add_info(Barcode,Item_name,Item_colour,Item_Desc,Item_size,Item_material,Buying_price,Category,Family,sub_family,Brand_name,supplier,supplier_NO,shop):
     # adding distribution data
@@ -72,9 +98,9 @@ def fetch_info():
     return data
 
 
-def delete_info(id):
+def delete_info(barcode):
     # delete distribution info by id
     conn=sqlite3.connect("stock.db")
     con=conn.cursor()
-    con.execute("delete from dist_prod where pid=?",(id,))
+    con.execute("delete from dist_prod where Barcode=?",(barcode,))
     conn.commit()

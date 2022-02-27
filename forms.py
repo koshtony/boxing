@@ -92,18 +92,22 @@ def home():
 @login_required
 def success():
     return render_template("success.html")
+@app.route("/incoming")
+def dump_data():
+    conx=sqlite3.connect("order.db")
+    data=pd.read_sql_query("select *from orders",conx)
+    html_data=data.to_html()
+    file=open("template/data.html","w")
+    file.write(html_data)
+    file.close()
+    return render_template("data.html")
 @app.errorhandler(404)
 def error404(error):
-    return render_template('404.html'),404 
+    return render_template('404.html'),404
 @app.errorhandler(500)
 def error500(error):
     return render_template('500.html'),500
-class order(Resource):
-    def get(self):
-        conx=sqlite3.connect("order.db")
-        data=pd.read_sql_query("select *from orders",conx)
-        return data.to_json()
-api.add_resource(order,"/incoming")
+
 
 if __name__=="__main__":
     app.run(debug=True)

@@ -6,6 +6,8 @@ from PIL import Image
 from organ_sup import menu2
 import datetime
 from items import gui
+from style import colors3,colors4
+from supplier import download
 #import random
 def menu():
     gui()
@@ -41,21 +43,36 @@ def menu():
         salary=exp.text_input("Salary")
         remark=exp.text_area("comments")
         if exp.button("ADD INFO"):
-            p=st.progress(0)
+            p=exp.progress(0)
             for i in range(100):
                 time.sleep(0.01)
                 p.progress(i+1)
-            add_emp(id_no,name,gender,birth,doj,resign,comp,
-            Dep,post,role,status,attr,bank,bank_no,Nation,
-            addr,Emerg,marital,edu,major,gradu,salary,remark)
+            try:
+                add_emp(id_no,name,gender,birth,doj,resign,comp,
+                Dep,post,role,status,attr,bank,bank_no,Nation,
+                addr,Emerg,marital,edu,major,gradu,salary,remark)
+                exp.info("Details added successfully")
+            except:
+                st.error("Encountered some error")
+
 
     # search employee by id
     elif radc1=="fetch":
         # input search by employee id
         emp_rad=exp.radio("",["All","filter"])
         if emp_rad=="All":
-            if exp.button("fetch all"):
-                col1.dataframe(fetch_emp())
+            try:
+                col1.dataframe(fetch_emp().style.apply(colors4))
+                file_=download(fetch_emp())
+                st.download_button(
+                "Export",
+                file_,
+                "all_employees.csv",
+                "text/csv",
+                key="download-csv"
+                )
+            except:
+                st.error("Encountered some error")
         elif emp_rad=="filter":
             search=exp.text_input("search by id")
             if exp.button("fetch"):
@@ -63,9 +80,20 @@ def menu():
                 for i in range(100):
                     time.sleep(0.01)
                     p.progress(i+1)
-                data=fetch_emp()
-                d_f=data[data["empid"]==int(search)]
-                col1.dataframe(d_f)
+                try:
+                    data=fetch_emp()
+                    d_f=data[data["empid"]==int(search)]
+                    col1.dataframe(d_f)
+                    file_=download(d_f)
+                    st.download_button(
+                    "Export",
+                    file_,
+                    "employees.csv",
+                    "text/csv",
+                    key="download-csv"
+                    )
+                except:
+                    st.error("Encountered some error")
     elif radc1=="edit":
         # input for id to edit
         edit_id=exp.text_input("edit employee id")
@@ -78,16 +106,31 @@ def menu():
             for i in range(100):
                 time.sleep(0.01)
                 p.progress(i+1)
-            edit_emp(change,sets,edit_id)
+            try:
+                if list(fetch_emp().empid).count(edit_id)>1:
+                    edit_emp(change,sets,edit_id)
+                    exp.info("Edited successfully")
+                else:
+                    exp.warning("Employee not found..check id")
+            except:
+                st.error("Encountered some error")
 
     elif radc1=="delete":
         emp_id=exp.text_input("employee id to delete")
         if exp.button("Delete"):
-            p=st.progress(0)
+            p=exp.progress(0)
             for i in range(100):
                 time.sleep(0.01)
                 p.progress(i+1)
-            delete_emp(emp_id)
+            try:
+                if list(fetch_emp().empid).count(emp_id)>1:
+                    delete_emp(emp_id)
+                    exp.info("Employee removed successfully")
+                else:
+                    exp.warning("Employee  not found..check id")
+
+            except:
+                st.error("Encountered some error")
     menu2(col1,col3)
 
 
@@ -123,6 +166,7 @@ def delete_emp(id):
      conn=sqlite3.connect("organisation.db")
      con=conn.cursor()
      con.execute("delete from employees where empid=?",(id,))
+     conn.commit()
 def get_emp_id(id):
     connx=sqlite3.connect("organisation.db")
     emp_data=pd.read_sql_query("select *from employees",connx)

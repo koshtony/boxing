@@ -1,11 +1,24 @@
 import streamlit as st
 import pandas as pd
 import sqlite3 as sq
+import time
+from supplier import download
 def gui():
     drop=st.expander("Items")
     opt=drop.selectbox("",["fetch","Add","Delete"])
     if opt=="fetch":
-        st.dataframe(fetch())
+        try:
+            st.dataframe(fetch())
+            file_=download(fetch())
+            st.download_button(
+            "Export",
+            file_,
+            "items.csv",
+            "text/csv",
+            key="download-csv"
+            )
+        except:
+            st.warning("Error Encountered")
     elif opt=="Add":
         name=drop.text_input("Item Name")
         date=drop.date_input("creation date")
@@ -13,13 +26,30 @@ def gui():
         family=drop.text_input("Item Family")
         remark=drop.text_area("remark")
         if drop.button("Add"):
-            add(name,date,category,family,remark)
-            drop.info("item added successfully")
+            progress=drop.progress(0)
+            for i in range(100):
+                time.sleep(0.01)
+                progress.progress(i+1)
+            try:
+                add(name,date,category,family,remark)
+                drop.info("item added successfully")
+            except:
+                drop.warning("Error Encountered")
     elif opt=="Delete":
         name=drop.text_input("item to delete")
-        if drop.column("Delete Item"):
-            delete(name)
-            drop.info("Item deleted successfully")
+        if drop.button("Delete Item"):
+            progress=drop.progress(0)
+            for i in range(100):
+                time.sleep(0.01)
+                progress.progress(i+1)
+            try:
+                if list(fetch().name).count(name)>1:
+                    delete(name)
+                    drop.info("Item deleted successfully")
+                else:
+                    drop.warning("Item not found..chech name")
+            except:
+                drop.warning("Error Encountered")
 def add(name,date,category,family,remark):
     conn=sq.connect("item.db")
     con=conn.cursor()

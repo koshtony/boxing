@@ -3,6 +3,9 @@ import sqlite3
 from items import fetch
 import requests
 import json
-res=requests.get("http://127.0.0.1:5000/incoming")
-j_data=json.loads(res.json())
-print(pd.DataFrame(j_data))
+from supplier import incoming
+from datetime import datetime as dt
+df=incoming()
+df["date"]=pd.to_datetime(df["date"],format="%Y/%m/%d").dt.date
+df["date"]=[str(d) for d in df["date"]]
+print(df[(df['date'] >= '2022-02-24') & (df['date'] < '2022-11-02') & (df["eid"]==123)])
