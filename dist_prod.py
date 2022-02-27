@@ -5,6 +5,7 @@ import time
 from organ_sup import fetch_prod
 from items import fetch
 from supplier import download
+from style import colors5
 def dist_menu():
         pander=st.expander("Add stock")
         Barcode=pander.text_input("Scan Barcode")
@@ -45,7 +46,7 @@ def dist_menu():
                     time.sleep(0.01)
                     p.progress(i+1)
                 try:
-                    st.dataframe(f_data)
+                    st.dataframe(f_data.style.apply(colors5))
                     file_=download(f_data)
                     st.download_button(
                     "Export",
@@ -58,7 +59,7 @@ def dist_menu():
                     st.error("Error Encountered")
         elif fetch_r=="All":
             try:
-                st.dataframe(fetch_info())
+                st.dataframe(fetch_info().style.apply(colors5))
                 file_=download(fetch_info())
                 st.download_button(
                 "Export",

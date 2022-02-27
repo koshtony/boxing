@@ -3,6 +3,7 @@ import sqlite3
 import pandas as pd
 import time
 from supplier import download
+from style import colors4
 def menu2(col1,col3):
     exp=col3.expander("Supply field")
     radc2=exp.selectbox("",["fetch","add","edit","delete"])
@@ -40,7 +41,7 @@ def menu2(col1,col3):
                 try:
                     s_fetch_d=fetch_prod()
                     s_f_fetch_d=s_fetch_d[s_fetch_d["sid"]==int(search)]
-                    col3.dataframe(s_f_fetch_d)
+                    col3.dataframe(s_f_fetch_d.style.apply(colors4))
                     file_=download(s_f_fetch_d)
                     col3.download_button(
                     "Export",
@@ -53,7 +54,7 @@ def menu2(col1,col3):
                     st.error("Encountered some error")
         elif s_fetch_r=="All":
             try:
-                col3.dataframe(fetch_prod())
+                col3.dataframe(fetch_prod().style.apply(colors4))
                 file_=download(fetch_prod())
                 col3.download_button(
                 "Export",

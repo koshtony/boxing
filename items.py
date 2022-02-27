@@ -3,12 +3,13 @@ import pandas as pd
 import sqlite3 as sq
 import time
 from supplier import download
+from style import colors4
 def gui():
     drop=st.expander("Items")
     opt=drop.selectbox("",["fetch","Add","Delete"])
     if opt=="fetch":
         try:
-            st.dataframe(fetch())
+            st.dataframe(fetch().style.apply(colors4))
             file_=download(fetch())
             st.download_button(
             "Export",

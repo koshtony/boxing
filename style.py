@@ -10,3 +10,6 @@ def colors3(df):
 def colors4(df):
     color="brown"
     return [f'background-color:{color}']*len(df)
+def colors5(df):
+    color="#00FFFF"
+    return [f'background-color:{color}']*len(df)

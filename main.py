@@ -1,7 +1,7 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 from organ_emp import menu
-from style import colors,colors2
+from style import colors
 from PIL import Image
 from dist_prod import dist_menu,fetch_info,delete_info
 from auth import logs,retrv_log
@@ -72,7 +72,7 @@ if login_status==True:
                         key="download-csv"
                         )
     elif rad1=="CUSTOMER INFO":
-        st.dataframe(get_customer().style.apply(colors2))
+        st.dataframe(get_customer().style.apply(colors))
         file_=download(get_customer())
         st.download_button(
         "Export",
