@@ -16,11 +16,13 @@ st.get_option("theme.textColor")
 #creating login page
 def back_im():
     background = Image.open('back.jpeg')
-    st.image(background, width=1000)
+    st.image(background, width=800)
 
 ex=st.expander("MENU")
 ex.write("Things to note")
 ex.write("Order Here [link](https://boxingsales.herokuapp.com/)")
+background = Image.open('back.jpeg')
+st.sidebar.image(background, width=70)
 log_ex=st.sidebar.expander("Create User")
 name=log_ex.text_input("Name")
 eid=log_ex.text_input("Employee Id")
@@ -28,8 +30,6 @@ pwd=log_ex.text_input("Create Password",type="password")
 pwd2=log_ex.text_input("Confirm Password",type="password")
 info=fetch_emp()
 
-background = Image.open('back.jpeg')
-log_ex.image(background, width=70)
 if log_ex.button("Create User"):
     if pwd!=pwd2:
         st.sidebar.write("password doesn't match")
