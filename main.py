@@ -21,6 +21,7 @@ def back_im():
 ex=st.expander("MENU")
 ex.write("Things to note")
 ex.write("Order Here [link](https://boxingsales.herokuapp.com/)")
+st.sidebar.markdown("<i style='text-align: center; color: tomato;'>ITREND</h1>", unsafe_allow_html=True)
 background = Image.open('back.jpeg')
 st.sidebar.image(background, width=70)
 log_ex=st.sidebar.expander("Create User")
