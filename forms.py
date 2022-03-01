@@ -6,13 +6,13 @@ from flask_wtf import FlaskForm
 import sqlite3
 from pop_users import con_both
 import pandas as pd
-from items import fetch
+#from items import fetch
 from wtforms.validators import DataRequired,Email,EqualTo,Length,ValidationError
 from wtforms import StringField,IntegerField,SelectField,SubmitField,PasswordField,BooleanField,TextAreaField
 from flask_login import current_user,UserMixin,login_user,logout_user,UserMixin,login_required
 from flask_restful import Resource,Api
 from item_form import connect
-from srs import sr_names
+from srs import sr_names,get_emp_id
 #from organ_emp import get_emp_id
 app=Flask(__name__,template_folder='template')
 key='@boxing'
