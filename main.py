@@ -16,7 +16,7 @@ st.get_option("theme.textColor")
 #creating login page
 def back_im():
     background = Image.open('back.jpeg')
-    st.image(background, width=50)
+    st.image(background, width=100)
 
 ex=st.expander("MENU")
 ex.write("Things to note")
