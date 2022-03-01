@@ -13,7 +13,7 @@ from flask_login import current_user,UserMixin,login_user,logout_user,UserMixin,
 from flask_restful import Resource,Api
 from item_form import connect
 from srs import sr_names
-from organ_emp import get_emp_id
+#from organ_emp import get_emp_id
 app=Flask(__name__,template_folder='template')
 key='@boxing'
 app.config['SECRET_KEY']=key
