@@ -58,7 +58,10 @@ class orders(data.Model):
     s_id=data.Column(data.Integer,data.ForeignKey('member.eid'),nullable=False)
     def __repr__(self):
         return str(self.id)
-@app.route('/',methods=['GET','POST'])
+@app.route('/')
+def index():
+    return render_template('index.html')
+@app.route('/login',methods=['GET','POST'])
 def login():
     con_both()
     form=logform()
