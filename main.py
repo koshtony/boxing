@@ -64,7 +64,7 @@ if login_status==True:
                         st.warning("Item not found")
                     else:
                         st.header("Dispatched Orders")
-                        st.dataframe(dispatch(fetch_info(),sel_).style.apply(colors2))
+                        st.dataframe(dispatch(fetch_info(),sel_))
                         file_=download(dispatch(fetch_info(),sel_))
                         delete_info(sel_)
                         st.download_button(
