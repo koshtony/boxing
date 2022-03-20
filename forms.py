@@ -81,9 +81,7 @@ def logout():
 @app.route('/home',methods=['GET','POST'])
 @login_required
 def home():
-    names=pd.read_html("https://boxingsales.herokuapp.com/items")
-    names=names[0]
-    names=names.name.to_list()
+    names=connect()
     if request.method=="POST":
         savings=orders(eid=current_user.eid,fname=get_emp_id(current_user.eid),phone=request.form["iphone"],
         item=request.form["iname"],size=request.form["isize"],quant=request.form["quantity"],
@@ -97,7 +95,7 @@ def home():
 @app.route("/success")
 @login_required
 def success():
-    return render_template("success.html")
+    return render_template("suc.html")
 @app.route("/incoming")
 def dump_data():
     conx=sqlite3.connect("order.db")
@@ -107,15 +105,6 @@ def dump_data():
     file.write(html_data)
     file.close()
     return render_template("data.html")
-@app.route("/items")
-def dump_items():
-    conx=sqlite3.connect("item.db")
-    data=pd.read_sql_query("select *from prod",conx)
-    data_html=data.to_html()
-    file=open("template/items.html","w")
-    file.write(data_html)
-    file.close()
-    return render_template("items.html")
 @app.errorhandler(404)
 def error404(error):
     return render_template('404.html'),404
