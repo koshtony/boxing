@@ -81,6 +81,9 @@ def logout():
 @app.route('/home',methods=['GET','POST'])
 @login_required
 def home():
+    names=pd.read_html("http://127.0.0.1:5000/items")
+    names=names[0]
+    names=names.name.to_list()
     if request.method=="POST":
         savings=orders(eid=current_user.eid,fname=get_emp_id(current_user.eid),phone=request.form["iphone"],
         item=request.form["iname"],size=request.form["isize"],quant=request.form["quantity"],
@@ -90,7 +93,7 @@ def home():
         data.session.add(savings)
         data.session.commit()
         return redirect(url_for('success'))
-    return render_template('order.html',names=connect())
+    return render_template('order.html',names=names)
 @app.route("/success")
 @login_required
 def success():
@@ -104,6 +107,15 @@ def dump_data():
     file.write(html_data)
     file.close()
     return render_template("data.html")
+@app.route("/items")
+def dump_items():
+    conx=sqlite3.connect("item.db")
+    data=pd.read_sql_query("select *from prod",conx)
+    data_html=data.to_html()
+    file=open("template/items.html","w")
+    file.write(data_html)
+    file.close()
+    return render_template("items.html")
 @app.errorhandler(404)
 def error404(error):
     return render_template('404.html'),404
