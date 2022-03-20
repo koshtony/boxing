@@ -81,7 +81,7 @@ def logout():
 @app.route('/home',methods=['GET','POST'])
 @login_required
 def home():
-    names=pd.read_html("http://127.0.0.1:5000/items")
+    names=pd.read_html("https://boxingsales.herokuapp.com/items")
     names=names[0]
     names=names.name.to_list()
     if request.method=="POST":
